@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import withClass from '../../../hoc/withClass';
 import Aux from '../../../hoc/Aux';
 import PropTypes from 'prop-types';
+import { AuthContext } from '../../../containers/App';
 
 import classes from './Person.css';
 class Person extends Component {
@@ -17,25 +18,29 @@ class Person extends Component {
 
     componentDidMount() {
         console.log('Inside Person Componen Did mount');
-        if (this.props.position === 0){
+        if (this.props.position === 0) {
             this.inputElement.current.focus();
-        }     
+        }
     }
 
-    focus(){
+    focus() {
         this.inputElement.current.focus();
     }
 
     render() {
+        console.log('Next ISAUTHENTICATED', this.props.authenicated);
         return (
             <Aux>
+                <AuthContext.Consumer>
+                    {auth => auth ? <p>I am authenticated</p> : null}
+                </AuthContext.Consumer>
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old</p>
                 <p>{this.props.children}</p>
                 <input
-                    ref={this.inputElement} 
-                    type="text" 
-                    onChange={this.props.changed} 
-                    value={this.props.name}/>
+                    ref={this.inputElement}
+                    type="text"
+                    onChange={this.props.changed}
+                    value={this.props.name} />
             </Aux>
         );
         /* return [
