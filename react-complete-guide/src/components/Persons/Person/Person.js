@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import withClass from '../../../hoc/withClass';
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/Aux2';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../../containers/App';
 
