@@ -31,6 +31,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount = () => {
+        console.log(this.props);
         axios.get('https://react-my-burger-keithd.firebaseio.com/ingredients.json')
             .then(response => {
                 this.setState({ ingredients: response.data })
@@ -91,30 +92,42 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        //alert('You continue!');
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Keith Doran',
-                address: {
-                    street: 'Test Street',
-                    country: 'Ireland'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
+        // //alert('You continue!');
+        // this.setState({ loading: true });
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Keith Doran',
+        //         address: {
+        //             street: 'Test Street',
+        //             country: 'Ireland'
+        //         },
+        //         email: 'test@test.com'
+        //     },
+        //     deliveryMethod: 'fastest'
+        // }
+        // //json bit ... just for firebase
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         this.setState({ loading: false, purchasing: false });
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //         this.setState({ loading: false, purchasing: false });
+        //     })
+
+        const queryParams = [];
+
+        for (let ingredient in this.state.ingredients){
+            queryParams.push(encodeURIComponent(ingredient) + '=' + encodeURIComponent(this.state.ingredients[ingredient]));
         }
-        //json bit ... just for firebase
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ loading: false, purchasing: false });
-            })
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     }
 
     render() {
